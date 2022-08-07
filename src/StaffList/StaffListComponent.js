@@ -1,6 +1,8 @@
 import React, {Component} from "react";
-import{Card, CardFooter,CardBody, CardTitle} from 'reactstrap';
-import dateFormat from 'dateformat'; 
+import {Link, Route} from 'react-router-dom'
+import{Card, CardFooter,CardBody, CardTitle, CardImg, CardImgOverlay, CardHeader} from 'reactstrap';
+import DetailStaff from "./DetailStaff";
+
 
 class List extends Component{
     constructor(props){
@@ -15,45 +17,33 @@ class List extends Component{
         this.setState({selectedStaff:staff});
     }
 
-    renderStaff(staff){
-        if(staff != null){
-            return (
-                <Card className="col-3">
-                    <CardTitle>{staff.name}</CardTitle>
-                    <CardBody>
-                        <p>Ngày sinh: {dateFormat(staff.doB,"dd/mm/yyyy")}</p>
-                        <p>Ngày vào công ty: {dateFormat(staff.startDate,"dd/mm/yyyy")}</p>
-                        <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
-                        <p>Số ngày đã làm thêm: {staff.overTime}</p>
-                    </CardBody>
-                </Card>
-            );
-        } else {
-            return ( <div></div>);
-        }
-    }
+    
 
     render(){
         const ds = this.props.staffs.map((staff) =>{
             return (
-            <div key={staff.id} className='col-xl-3 col-md-4 m-1'>
-               <Card onClick={()=>this.onStaffSelected(staff)}>
-                <CardBody>
+            <div key={staff.id} className='col-xl-2 col-md-4 col-6 mt-4 text-center'>
+            
+               <Card>
+                <Link to={`/List/${staff.id}`}>
+                <CardImg src={staff.image}/>
+                <CardTitle>
                     {staff.name}
-                </CardBody>
+                </CardTitle>
+                </Link>
                </Card>
+           
             </div>
             );
         });
         return(
             <div className ='container'>
                 <div className ='row'>
+                    <CardHeader className="cardheader">Nhân viên</CardHeader>
                         {ds}
-            <CardFooter className="m-1">Bấm vào tên nhân viên để xem thông tin</CardFooter>
+                    <CardFooter className="m-4">Bấm vào tên nhân viên để xem thông tin</CardFooter>
                 </div>
-                <div className ='row'>
-                    {this.renderStaff(this.state.selectedStaff)}
-                </div>
+                
             </div>
 
         );
